@@ -1,0 +1,15 @@
+@import 'material';
+
+.mdl-floating-button {
+  position:fixed;
+  bottom:50px;
+  right:50px;
+}
+
+.mdl-card-wide {
+  width:100%;
+}
+
+.mdl-card-compact {
+  min-height:0;
+}

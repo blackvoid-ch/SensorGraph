@@ -1,0 +1,42 @@
+<%= form_for @label do |f| %>
+    <%= hidden_field_tag('sensor', @sensor.id) %>
+
+    <div class="mdl-card__supporting-text">
+      <% if @label.errors.any? %>
+          <div id="message message-error">
+            <h5>
+              <%= pluralize(@label.errors.count, "error") %> occured while saving this label.
+            </h5>
+            <ul>
+              <% @label.errors.full_messages.each do |msg| %>
+                  <li><%= msg %></li>
+              <% end %>
+            </ul>
+          </div>
+      <% end %>
+
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <%= f.label :title, class: "mdl-textfield__label" %>
+        <%= f.text_field :title, class: "mdl-textfield__input" %>
+      </div>
+
+      <div class="mdl-selectfield mdl-js-selectfield">
+        <%= f.label :group_mode, class: "mdl-selectfield__label" %>
+        <%= f.select(:group_mode,
+                     %w(default second minute hour day week month quarter year),
+                     {include_blank: ""},
+                     {
+                         :class => "mdl-selectfield__select"
+                     }
+            )
+        %>
+        <span class="mdl-selectfield__error">Select a value</span>
+      </div>
+
+    </div>
+
+    <div class="mdl-card__actions mdl-card--border">
+      <%= link_to 'Cancel', sensors_path, :class => 'mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect' %>
+      <%= f.submit 'Save', :class => 'mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect' %>
+    </div>
+<% end %>

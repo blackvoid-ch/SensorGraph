@@ -1,0 +1,31 @@
+<%= form_for @sensor do |f| %>
+    <div class="mdl-card__supporting-text">
+      <% if @sensor.errors.any? %>
+          <div id="message message-error">
+            <h5>
+              <%= pluralize(@sensor.errors.count, "error") %> occured while trying to register this sensor.
+            </h5>
+            <ul>
+              <% @sensor.errors.full_messages.each do |msg| %>
+                  <li><%= msg %></li>
+              <% end %>
+            </ul>
+          </div>
+      <% end %>
+
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <%= f.label :title, class: "mdl-textfield__label" %>
+        <%= f.text_field :title, class: "mdl-textfield__input" %>
+      </div>
+
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <%= f.label :description, class: 'mdl-textfield__label' %>
+        <%= f.text_area :description, class: 'mdl-textfield__input' %>
+      </div>
+    </div>
+
+    <div class="mdl-card__actions mdl-card--border">
+      <%= link_to 'Cancel', sensors_path, :class => 'mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect' %>
+      <%= f.submit 'Save', :class => 'mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect' %>
+    </div>
+<% end %>

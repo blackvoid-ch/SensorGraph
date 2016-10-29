@@ -1,0 +1,93 @@
+<% @sensors.each do |sensor| %>
+    <div class="mdl-card-wide mdl-card mdl-shadow--2dp">
+      <div class="mdl-card__title mdl-color--primary mdl-color-text--white">
+        <h2 class="mdl-card__title-text"><%= sensor.title %></h2>
+      </div>
+      <div class="mdl-card__supporting-text">
+        <%= sensor.description %>
+      </div>
+      <div class="mdl-card__actions mdl-card__supporting-text mdl-card--border">
+
+        <% sensor.labels.each do |label| %>
+            <div class="mdl-card-wide mdl-card mdl-shadow--2dp">
+              <div class="mdl-card__title">
+                <h2 class="mdl-card__title-text"><%= label.title %></h2>
+              </div>
+              <div class="mdl-card__supporting-text">
+
+                <div class="mdl-grid">
+                  <div class="mdl-cell mdl-cell--3-col">
+                    <div class="mdl-card-wide mdl-card  mdl-shadow--2dp mdl-card-compact">
+                      <div class="mdl-card__title">
+                        <h4 class="mdl-card__title-text">Current <%= label.title %></h4>
+                      </div>
+                      <div class="mdl-card__supporting-text">
+                        <%= label.current_value %>
+                      </div>
+                    </div>
+
+                    <div class="mdl-card-wide mdl-card  mdl-shadow--2dp mdl-card-compact">
+                      <div class="mdl-card__title">
+                        <h4 class="mdl-card__title-text">Average <%= label.title %></h4>
+                      </div>
+                      <div class="mdl-card__supporting-text">
+                        <%= number_with_precision label.average_value, :precision => 2 %>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mdl-cell mdl-cell--9-col">
+                    <%= area_chart label.graph_object %>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mdl-card__menu">
+                <%= link_to ('<i class="material-icons">delete</i>').html_safe,
+                            label_path(label),
+                            :class => 'mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect',
+                            method: :delete,
+                            data: {confirm: 'Are you sure?'}
+                %>
+
+                <%= link_to ('<i class="material-icons">edit</i>').html_safe,
+                            edit_label_path(label),
+                            :class => 'mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect'
+                %>
+
+                <%= link_to ('<i class="material-icons">info</i>').html_safe,
+                            label_path(label),
+                            :class => 'mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect'
+                %>
+
+              </div>
+          </div>
+        <% end %>
+
+      </div>
+
+      <div class="mdl-card__actions mdl-card__supporting-text mdl-card--border">
+        <%= link_to 'Create label', new_label_path(:sensor => sensor), :class => 'mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect' %>
+      </div>
+
+
+      <div class="mdl-card__menu mdl-color-text--white">
+        <%= link_to ('<i class="material-icons">delete</i>').html_safe,
+                    sensor_path(sensor),
+                    :class => 'mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect',
+                    method: :delete,
+                    data: {confirm: 'Are you sure?'}
+        %>
+
+        <%= link_to ('<i class="material-icons">edit</i>').html_safe,
+                    edit_sensor_path(sensor),
+                    :class => 'mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect'
+        %>
+      </div>
+    </div>
+    <p>&nbsp;</p>
+<% end %>
+
+<a href="<%= new_sensor_path %>" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored mdl-shadow--4dp mdl-color--accent mdl-floating-button">
+  <i class="material-icons">add</i>
+</a>
+
