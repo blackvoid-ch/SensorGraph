@@ -57,7 +57,7 @@ class Label < ApplicationRecord
   end
 
   def results_in_time_range
-    if self.time_range == 'default'
+    if self.time_range == 'default' or self.time_range.nil?
       return self.results
     end
 
