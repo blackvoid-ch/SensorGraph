@@ -21,9 +21,12 @@
       </div>
 
       <div class="mdl-selectfield mdl-js-selectfield">
+        <% if @label.time_range.present? %>
+          <span>Group results by</span>
+        <% end %>
         <%= f.label :group_mode, class: "mdl-selectfield__label" %>
         <%= f.select(:group_mode,
-                     %w(default second minute hour day week month quarter year),
+                     @label.time_selection_values,
                      {include_blank: ""},
                      {
                          :class => "mdl-selectfield__select"
@@ -33,6 +36,35 @@
         <span class="mdl-selectfield__error">Select a value</span>
       </div>
 
+      <div class="mdl-selectfield mdl-js-selectfield mdl-textfield--floating-label">
+        <% if @label.time_range.present? %>
+          <span>Time range</span>
+        <% end %>
+        <%= f.label :time_range, class: "mdl-selectfield__label" %>
+        <%= f.select(:time_range,
+                     @label.time_selection_values,
+                     {include_blank: ""},
+                     {
+                         :class => "mdl-selectfield__select"
+                     }
+            )
+        %>
+        <span class="mdl-selectfield__error">Select a value</span>
+      </div>
+
+      <p>
+        <span>Time Mode</span>
+      </p>
+
+      <% Label.time_modes.keys.each do |mode| %>
+        <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect">
+            <%= f.radio_button :time_mode, mode, class: 'mdl-radio__button' %>
+            <span class="mdl-radio__label">
+              <%= f.label mode.to_sym %>
+            </span>
+        </label>
+        <br>
+      <% end %>
     </div>
 
     <div class="mdl-card__actions mdl-card--border">

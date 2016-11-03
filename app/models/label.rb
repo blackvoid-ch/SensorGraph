@@ -5,9 +5,15 @@ class Label < ApplicationRecord
   validates :title, presence: true,
             length: {minimum: 1}
   validates :group_mode, presence: true
+  validates :time_range, presence: true
+
+  validates_inclusion_of :group_mode, :in => :time_selection_values
+  validates_inclusion_of :time_range, :in => :time_selection_values
+
+  enum time_mode: [ :period, :current ]
 
   def current_value
-    @result = self.results.last
+    @result = results_in_time_range.last unless results_in_time_range.nil?
     if @result.present?
       @result.value
     else
@@ -16,39 +22,58 @@ class Label < ApplicationRecord
   end
 
   def average_value
-    sum = 0
+    if not results_in_time_range.nil?
 
-    self.results.each do |result|
-      sum += result.value
-    end
+      sum = 0
 
-    if self.results.count != 0
-      sum / self.results.count
+      results_in_time_range.each do |result|
+        sum += result.value
+      end
+
+      if results_in_time_range.count != 0
+        sum / results_in_time_range.count
+      else
+        "No data"
+      end
+
     else
       "No data"
     end
   end
 
   def graph_object
-    case self.group_mode
-           when "second"
-             self.results.group_by_second(:created_at, "avg", "value")
-           when "minute"
-             self.results.group_by_minute(:created_at, "avg", "value")
-           when "hour"
-             self.results.group_by_hour(:created_at, "avg", "value")
-           when "day"
-             self.results.group_by_day(:created_at, "avg", "value")
-           when "week"
-             self.results.group_by_week(:created_at, "avg", "value")
-           when "month"
-             self.results.group_by_month(:created_at, "avg", "value")
-           when "quarter"
-             self.results.group_by_quarter(:created_at, "avg", "value")
-           when "year"
-             self.results.group_by_year(:created_at, "avg", "value")
-           else
-             self.results.group(:created_at).maximum(:value)
+    results_by_group_mode
+  end
+
+  def results_by_group_mode
+    unless results_in_time_range.nil?
+      group_by_method = 'group_by_' + self.group_mode
+      if self.results.respond_to? group_by_method
+        results_in_time_range.public_send(group_by_method, :created_at, "avg", "value")
+      else
+        results_in_time_range.group(:created_at).average(:value)
+      end
     end
+  end
+
+  def results_in_time_range
+    if self.time_range == 'default'
+      return self.results
+    end
+
+    if self.time_mode == 'period'
+      if 1.respond_to? self.time_range
+        self.results.where(:created_at => 1.public_send(self.time_range).ago..Time.now)
+      end
+    else
+      time_method = 'beginning_of_' + self.time_range
+      if Time.now.respond_to? time_method
+        self.results.where(:created_at => Time.now.public_send(time_method)..Time.now)
+      end
+    end
+  end
+
+  def time_selection_values
+    %w(default second minute hour day week month quarter year)
   end
 end

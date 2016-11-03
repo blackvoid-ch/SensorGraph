@@ -45,6 +45,6 @@ class LabelsController < ApplicationController
 
   private
     def label_params
-      params.require(:label).permit(:title, :group_mode, :time_range)
+      params.require(:label).permit(:title, :group_mode, :time_range, :time_mode)
     end
 end
