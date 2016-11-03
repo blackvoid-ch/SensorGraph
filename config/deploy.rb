@@ -3,7 +3,7 @@ server 'vs.xama.eu', port: 553, roles: [:web, :app, :db], primary: true
 
 set :repo_url,        'git@github.com:xama5/SensorGraph.git'
 set :application,     'SensorGraph'
-set :user,            'deploy'
+set :user,            'rails'
 set :puma_threads,    [4, 16]
 set :puma_workers,    0
 
