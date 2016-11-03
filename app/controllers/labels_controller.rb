@@ -27,6 +27,7 @@ class LabelsController < ApplicationController
 
   def update
     @label = Label.find(params[:id])
+    @sensor = @label.sensor
 
     if @label.update(label_params)
       redirect_to sensors_path
@@ -44,6 +45,6 @@ class LabelsController < ApplicationController
 
   private
     def label_params
-      params.require(:label).permit(:title, :group_mode)
+      params.require(:label).permit(:title, :group_mode, :time_range)
     end
 end
