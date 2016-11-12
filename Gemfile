@@ -3,18 +3,16 @@ source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.0.0', '>= 5.0.0.1'
-# Use sqlite3 as the database for Active Record
+# Use sqlite3 as the database for Active Record (development)
 gem 'sqlite3'
-# Use Puma as the app server
-gem 'puma', '~> 3.0'
+# Production server database
+gem 'mysql2'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails', '~> 4.2'
-# See https://github.com/rails/execjs#readme for more supported runtimes
-# gem 'therubyracer', platforms: :ruby
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
@@ -23,12 +21,9 @@ gem 'turbolinks', '~> 5'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.5'
 # Use Redis adapter to run Action Cable in production
-# gem 'redis', '~> 3.0'
+gem 'redis', '~> 3.0'
 # Use ActiveModel has_secure_password
-# gem 'bcrypt', '~> 3.1.7'
-
-# Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
+gem 'bcrypt', '~> 3.1.7'
 
 # Material Design
 gem 'material_design_lite-sass'
@@ -40,6 +35,13 @@ gem 'chartkick', '~> 2.1', '>= 2.1.1'
 # Group query results
 gem 'dateslices'
 
+# Background jobs
+gem 'sidekiq', '~> 3.1'
+
+group :production do
+  # Use Unicorn as the app server
+  gem 'unicorn', '~> 4.8'
+end
 
 # Deployment
 group :development do
@@ -56,6 +58,8 @@ group :development, :test do
 end
 
 group :development do
+  # Use Puma as the app server
+  gem 'puma', '~> 3.0'
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
   gem 'web-console'
   gem 'listen', '~> 3.0.5'
