@@ -3,7 +3,7 @@ root_path = File.expand_path(File.expand_path(File.dirname(__FILE__)) + "/../")
 worker_processes ENV['UNICORN_WORKERS'].to_i
 working_directory root_path
 
-listen "#{root_path}/tmp/unicorn.sock"
+listen "#{root_path}/tmp/sockets/unicorn.sock"
 
 # Abort request if it exceeds 20 seconds
 timeout 20
